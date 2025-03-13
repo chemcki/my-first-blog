@@ -28,15 +28,30 @@ DEBUG = True
 ALLOWED_HOSTS = []
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.pythonanywhere.com']
 
+LOGIN_REDIRECT_URL = '/'
+
 
 # Application definition
 
 INSTALLED_APPS = [
-    # My apps:
+    # Custom apps:
+    "blog",
+    "wagtail.contrib.forms",
+    "wagtail.contrib.redirects",
+    "wagtail.embeds",
+    "wagtail.sites",
+    "wagtail.users",
+    "wagtail.snippets",
+    "wagtail.documents",
+    "wagtail.images",
+    "wagtail.search",
+    "wagtail.admin",
+    "wagtail",
+    "modelcluster",
+    "taggit",
+    
 
-    'blog', 
-
-    # Django apps:
+    # Django installed apps:
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,6 +69,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Custom added Middleware:
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -61,7 +79,11 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / "templates",  # Make sure this is included globally
+            BASE_DIR / "blog/templates",
+            BASE_DIR / "blog/templates/blog",
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,6 +97,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
+
+
 
 
 # Database
@@ -124,6 +148,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+
+# If deploying locally
+WAGTAILADMIN_BASE_URL = "http://127.0.0.1:8000"
+#If deploying online
+#WAGTAILADMIN_BASE_URL = "https://yourdomain.pythonanywhere.com"
+
+WAGTAIL_SITE_NAME = 'Django Girls Blog'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
